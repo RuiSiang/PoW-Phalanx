@@ -13,8 +13,11 @@ export default class Auth {
     if (parsedUrl.query.token == config.subscription_token) {
       return 'subscription'
     }
-    if (parsedUrl.query.token == config.synchronization_token) {
-      return 'synchronization'
+    if (parsedUrl.query.token == config.controller_token) {
+      return 'controller'
+    }
+    if (parsedUrl.query.token == config.model_token) {
+      return 'model'
     }
     return undefined
   }

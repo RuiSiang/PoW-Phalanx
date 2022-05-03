@@ -1,6 +1,6 @@
 import Socket from 'socket.io'
 import Auth from './auth'
-import Statistics from './statistics'
+import Controller from './controller'
 
 export default class Server {
   private static instance: Server
@@ -27,7 +27,13 @@ export default class Server {
       client.on('message', async (message: string) => {
         switch (channel) {
           case 'subscription':
-            await Statistics.subscriptionProcessor(message, client)
+            await Controller.subscriptionProcessor(message, client)
+            break
+          case 'controller':
+            await Controller.controllerProcessor(message, client)
+            break
+          case 'model':
+            await Controller.modelProcessor(message, client)
             break
           default:
             console.log(message)
