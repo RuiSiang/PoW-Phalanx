@@ -1,6 +1,6 @@
 # WIP: PoW Phalanx
 
-Controller for PoW Shield that calculates and assigns the optimal difficulty via request and waf trigger distributions based on machine learning model.
+Controller for [PoW-Shield](https://github.com/RuiSiang/PoW-Shield) that calculates and assigns the optimal difficulty via request and waf trigger distributions based on machine learning model.
 
 Todos:
 - [x] Socket connectivity with PoW Shield
