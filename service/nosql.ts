@@ -33,6 +33,9 @@ class NoSql {
   public get = async (key: string) => {
     return await this.dbInstance.get(key)
   }
+  public mget = async (keys: string[]) => {
+    return await this.dbInstance.mget(keys)
+  }
   public setNX = async (
     key: string,
     value: string,
@@ -53,6 +56,12 @@ class NoSql {
   }
   public keys = async (pattern: string) => {
     return await this.dbInstance.keys(pattern)
+  }
+  public dump = async () => {
+    const keys = await this.dbInstance.keys('*')
+    return (await this.dbInstance.mget(keys)).map((item, index) => {
+      return `${keys[index]}|${item}`
+    })
   }
 }
 

@@ -51,6 +51,15 @@ export default class Controller {
           config.stat_keep_history_time
         )
         break
+      case 'ban':
+        this.server.broadcast(
+          'subscription',
+          JSON.stringify({
+            method: 'ban',
+            arguments: obj.arguments,
+          })
+        )
+        break
     }
   }
 
@@ -70,10 +79,25 @@ export default class Controller {
         )
         break
       case 'add_whitelist':
+        this.server.broadcast(
+          'subscription',
+          JSON.stringify({
+            method: 'add_whitelist',
+            arguments: [obj.arguments[0]],
+          })
+        )
         break
       case 'remove_whitelist':
+        this.server.broadcast(
+          'subscription',
+          JSON.stringify({
+            method: 'remove_whitelist',
+            arguments: [obj.arguments[0]],
+          })
+        )
         break
       case 'update_model':
+        // TODO
         break
     }
   }
@@ -82,8 +106,21 @@ export default class Controller {
     const obj: { method: string; arguments: string[] } = JSON.parse(message)
     switch (obj.method) {
       case 'set_difficulty':
+        this.server.broadcast(
+          'subscription',
+          JSON.stringify({
+            method: 'set_config',
+            arguments: ['difficulty', obj.arguments[0]],
+          })
+        )
         break
       case 'fetch_batch_stats':
+        client.send(
+          JSON.stringify({
+            method: 'batch_stats',
+            arguments: this.nosql.dump(),
+          })
+        )
         break
     }
   }
