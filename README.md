@@ -54,6 +54,17 @@ Arguments: N/A
 
 Response: stats
 
-| Argument | Type     | Description                                 |
-| -------- | -------- | ------------------------------------------- |
+| Argument | Type     | Description                           |
+| -------- | -------- | ------------------------------------- |
 | stats    | string[] | array of redis entries (`key\|value`) |
+
+Stat Format
+key: `"stat-type":"client-id":"ISO-Timestamp"`
+value: uint
+
+| Stat Type | Value                   |
+| --------- | ----------------------- |
+| legit_req | legit request count     |
+| ttl_req   | total request count     |
+| bad_nonce | bad nonce request count |
+| ttl_waf   | total waf triggers      |
