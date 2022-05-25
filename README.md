@@ -21,8 +21,8 @@ The following are implemented with standard socket.io protocol. Base url is desi
 
 ```JSON
 {
-  method: 'call-method',
-  arguments: [array-of-parameters],
+  "method": "call-method",
+  "arguments": ["array-of-parameters"],
 }
 ```
 
@@ -54,6 +54,6 @@ Arguments: N/A
 
 Response: stats
 
-| Argument | Type     | Description                  |
-| -------- | -------- | ---------------------------- | ------- |
-| stats    | string[] | array of redis entries (`key | value`) |
+| Argument | Type     | Description                                 |
+| -------- | -------- | ------------------------------------------- |
+| stats    | string[] | array of redis entries (`key\|value`) |
