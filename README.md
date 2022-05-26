@@ -19,6 +19,8 @@ Todos:
 
 The following are implemented with standard socket.io protocol. Base url is designated as endpoint, and `message` as the event. Calls are standarized in the following format:
 
+Default endpoint: `http://localhost:6000?token=token-for-type`
+
 ```JSON
 {
   "method": "call-method",
