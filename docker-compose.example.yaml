@@ -1,0 +1,68 @@
+version: '3.4'
+
+services:
+  pow-shield:
+    container_name: pow-shield
+    image: ruisiang/pow-shield
+    environment:
+      - 'PORT=3000'
+      - 'SESSION_KEY=abcdefghijklmnop'
+      - 'POW=on'
+      - 'NONCE_VALIDITY=60000'
+      - 'DIFFICULTY=13'
+      - 'BACKEND_URL=http://webapp:80'
+      - 'DATABASE_HOST=redis1'
+      - 'DATABASE_PORT=6379'
+      - 'DATABASE_PASSWORD='
+      - 'RATE_LIMIT=on'
+      - 'RATE_LIMIT_SAMPLE_MINUTES=60'
+      - 'RATE_LIMIT_SESSION_THRESHOLD=100'
+      - 'RATE_LIMIT_BAN_IP=on'
+      - 'RATE_LIMIT_IP_THRESHOLD=500'
+      - 'RATE_LIMIT_BAN_MINUTES=15'
+      - 'WAF=on'
+      - 'WAF_URL_EXCLUDE_RULES='
+      - 'WAF_HEADER_EXCLUDE_RULES=14,33,80,96,100'
+      - 'WAF_BODY_EXCLUDE_RULES='
+      - 'SOCKET=on'
+      - 'SOCKET_URL=http://pow-phalanx:6000'
+      - 'SOCKET_TOKEN=test-subscription-token'
+    depends_on:
+      - redis1
+      - webapp
+      - pow-phalanx
+    ports:
+      - '3000:3000'
+
+  pow-phalanx:
+    container_name: pow-phalanx
+    image: ruisiang/pow-phalanx
+    environment:
+      - 'PORT=6000'
+      - 'DATABASE_HOST=redis2'
+      - 'DATABASE_PORT=6379'
+      - 'DATABASE_PASSWORD='
+      - 'SUBSCRIPTION_TOKEN=test-subscription-token'
+      - 'CONTROLLER_TOKEN=test-controller-token'
+      - 'MODEL_TOKEN=test-model-token'
+      - 'STAT_FETCH_INTERVAL=5'
+      - 'STAT_KEEP_HISTORY_TIME=60'
+    depends_on:
+      - redis2
+    ports:
+      - '6000:6000'
+
+  redis1:
+    container_name: redis1
+    image: redis:alpine
+
+  redis2:
+    container_name: redis2
+    image: redis:alpine
+
+  #####################################
+  # Test hello-world webapp container #
+  #####################################
+  webapp:
+    container_name: webapp
+    image: rancher/hello-world
