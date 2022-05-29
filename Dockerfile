@@ -1,7 +1,6 @@
 FROM node:18 AS BUILD_IMAGE
 WORKDIR /build
 COPY . .
-ARG PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 RUN npm install
 RUN npm run build
 
