@@ -69,9 +69,11 @@ Passive endpoints consume a call and return data (call handled by phalanx socket
 
 i.e. `ttl_req:aTqmrN0eKqaQa1nIAAAB:2022-06-14T01:55:00.014Z|10`
 
-| stat-type | Value                   |
-| --------- | ----------------------- |
-| legit_req | legit request count     |
-| ttl_req   | total request count     |
-| bad_nonce | bad nonce request count |
-| ttl_waf   | total waf triggers      |
+| stat-type      | Value                                |
+| -------------- | ------------------------------------ |
+| legit_req      | accumulative legit request count     |
+| ttl_req        | accumulative total request count     |
+| bad_nonce      | accumulative bad nonce request count |
+| ttl_waf        | accumulative waf trigger count       |
+| ttl_solve_time | accumulated time of solved problems  |
+| prob_solved    | number of problems solved            |

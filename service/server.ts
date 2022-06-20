@@ -77,6 +77,8 @@ export default class Server {
           ttl_req: obj.arguments[1],
           bad_nonce: obj.arguments[2],
           ttl_waf: obj.arguments[3],
+          ttl_solve_time: obj.arguments[4],
+          prob_solved: obj.arguments[5],
         })
         this.nosql.setNX(
           `legit_req:${client.id}:${moment().toISOString()}`,
@@ -99,6 +101,18 @@ export default class Server {
         this.nosql.setNX(
           `ttl_waf:${client.id}:${moment().toISOString()}`,
           obj.arguments[3],
+          true,
+          config.stat_keep_history_time
+        )
+        this.nosql.setNX(
+          `ttl_solve_time:${client.id}:${moment().toISOString()}`,
+          obj.arguments[4],
+          true,
+          config.stat_keep_history_time
+        )
+        this.nosql.setNX(
+          `prob_solved:${client.id}:${moment().toISOString()}`,
+          obj.arguments[5],
           true,
           config.stat_keep_history_time
         )
