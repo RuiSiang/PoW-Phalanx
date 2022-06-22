@@ -67,7 +67,7 @@ export default class Server {
     const obj: { method: string; arguments: string[] } =
       typeof message == 'string' ? JSON.parse(message) : message
     switch (obj.method) {
-      case 'update_stats':
+      case 'phlx_update_stats':
         if (!obj.arguments.every((value) => validator.isInt(value))) {
           return
         }
@@ -77,6 +77,8 @@ export default class Server {
           ttl_req: obj.arguments[1],
           bad_nonce: obj.arguments[2],
           ttl_waf: obj.arguments[3],
+          ttl_solve_time: obj.arguments[4],
+          prob_solved: obj.arguments[5],
         })
         this.nosql.setNX(
           `legit_req:${client.id}:${moment().toISOString()}`,
@@ -102,12 +104,24 @@ export default class Server {
           true,
           config.stat_keep_history_time
         )
+        this.nosql.setNX(
+          `ttl_solve_time:${client.id}:${moment().toISOString()}`,
+          obj.arguments[4],
+          true,
+          config.stat_keep_history_time
+        )
+        this.nosql.setNX(
+          `prob_solved:${client.id}:${moment().toISOString()}`,
+          obj.arguments[5],
+          true,
+          config.stat_keep_history_time
+        )
         break
-      case 'ban':
+      case 'phlx_ban_ip':
         this.broadcast(
           'subscription',
           JSON.stringify({
-            method: 'ban',
+            method: 'shld_ban_ip',
             arguments: obj.arguments,
           })
         )
@@ -122,34 +136,34 @@ export default class Server {
     const obj: { method: string; arguments: string[] } =
       typeof message == 'string' ? JSON.parse(message) : message
     switch (obj.method) {
-      case 'override_difficulty':
+      case 'phlx_override_difficulty':
         this.broadcast(
           'subscription',
           JSON.stringify({
-            method: 'set_config',
+            method: 'shld_set_config',
             arguments: ['difficulty', obj.arguments[0]],
           })
         )
         break
-      case 'add_whitelist':
+      case 'phlx_add_whitelist':
         this.broadcast(
           'subscription',
           JSON.stringify({
-            method: 'add_whitelist',
+            method: 'shld_add_whitelist',
             arguments: [obj.arguments[0]],
           })
         )
         break
-      case 'remove_whitelist':
+      case 'phlx_remove_whitelist':
         this.broadcast(
           'subscription',
           JSON.stringify({
-            method: 'remove_whitelist',
+            method: 'shld_remove_whitelist',
             arguments: [obj.arguments[0]],
           })
         )
         break
-      case 'update_model':
+      case 'phlx_update_model':
         // TODO
         break
     }
@@ -159,22 +173,32 @@ export default class Server {
     const obj: { method: string; arguments: string[] } =
       typeof message == 'string' ? JSON.parse(message) : message
     switch (obj.method) {
-      case 'set_difficulty':
+      case 'phlx_set_difficulty':
         this.broadcast(
           'subscription',
           JSON.stringify({
-            method: 'set_config',
+            method: 'shld_set_config',
             arguments: ['difficulty', obj.arguments[0]],
           })
         )
         break
-      case 'fetch_batch_stats':
-        client.send(
-          JSON.stringify({
-            method: 'batch_stats',
-            arguments: await this.nosql.dump(),
-          })
-        )
+      case 'phlx_fetch_batch_stats':
+        const dump = await this.nosql.dump()
+        if (obj.arguments[0]) {
+          client.send(
+            JSON.stringify({
+              method: 'modl_batch_stats',
+              arguments: dump.filter((item: string) => item > obj.arguments[0]),
+            })
+          )
+        } else {
+          client.send(
+            JSON.stringify({
+              method: 'modl_batch_stats',
+              arguments: dump,
+            })
+          )
+        }
         break
     }
   }

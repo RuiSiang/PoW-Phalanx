@@ -15,11 +15,11 @@ Todos:
 
 ## Prerequisites
 
-## Endpoints
-
-The following are implemented with standard socket.io protocol. Base url is designated as endpoint, and `message` as the event. Calls are standarized in the following format:
+## Subscriptions
 
 Default endpoint: `http://localhost:6000?token=token-for-type`
+
+The following are implemented with standard socket.io protocol. Base url is designated as endpoint, and `message` as the event. Calls are standarized in the following format:
 
 ```JSON
 {
@@ -28,45 +28,52 @@ Default endpoint: `http://localhost:6000?token=token-for-type`
 }
 ```
 
-### Subscription Endpoints
+Passive endpoints consume a call and return data (call handled by phalanx socket server), active feeds emit a call to the client (call not handled by phalanx socket server).
 
-// Documentation in progress
+## Subscription Channel
 
-### Controller Endpoints
+| Method                | Type             | Scope     | Arguments                  | Description                                                     |
+| --------------------- | ---------------- | --------- | -------------------------- | --------------------------------------------------------------- |
+| phlx_update_stats     | passive endpoint | unicast   | stats:Stat[]               | Shield pushes new data to phalanx                               |
+| phlx_ban_ip           | passive endpoint | unicast   | [ip:string, seconds: uint] | Shield signals to phalanx that a new IP is banned               |
+| shld_ban_ip           | active feed      | broadcast | [ip:string, seconds: uint] | Phalanx broadcasts to shields that a new IP is banned           |
+| shld_fetch_stats      | active feed      | broadcast | N/A                        | Phalanx broadcasts to shields to signal a new data push         |
+| shld_set_config       | active feed      | broadcast | [key:string, value:any]    | Phalanx broadcasts to shields to set a config parameter         |
+| shld_add_whitelist    | active feed      | broadcast | [token:string]             | Phalanx broadcasts to shields to add a whitelist token          |
+| shld_remove_whitelist | active feed      | broadcast | [token:string]             | Phalanx broadcasts to shields to remove a whitelist token       |
+| shld_update_model     | active feed      | broadcast | TBD                        | Phalanx broadcasts to shields to update the edge security model |
 
-// Documentation in progress
+## Controller Channel
 
-### Model Endpoints
+| Method                   | Type             | Scope     | Arguments         | Description                                                           |
+| ------------------------ | ---------------- | --------- | ----------------- | --------------------------------------------------------------------- |
+| phlx_override_difficulty | passive endpoint | unicast   | [difficulty:uint] | Controller asks phalanx to override difficulty                        |
+| phlx_add_whitelist       | passive endpoint | unicast   | [token:string]    | Controller asks phalanx to add new whitelist token                    |
+| phlx_remove_whitelist    | passive endpoint | unicast   | [token:string]    | Controller asks phalanx to remove whitelist token                     |
+| phlx_update_model        | passive endpoint | unicast   | TBD               | Controller pushes edge security model to phalanx to update on shields |
+| ctrl_stats               | active feed      | broadcast | TBD               | Phalanx broadcasts current stats to controller                        |
 
-#### Set Difficulty
+## Model Channel
 
-Method: `set_difficulty`
-Arguments: [difficulty]
+| Method                 | Type             | Scope   | Arguments         | Description                                |
+| ---------------------- | ---------------- | ------- | ----------------- | ------------------------------------------ |
+| phlx_set_difficulty    | passive endpoint | unicast | [difficulty:uint] | Model asks phalanx to set new difficulty   |
+| phlx_fetch_batch_stats | passive endpoint | unicast | [lastRow?:string] | Model requests phalanx to send batch stats |
+| modl_batch_stats       | active feed      | unicast | stats:Stat[]      | Phalanx sends batch stats to model         |
 
-| Argument   | Type   | Description                     |
-| ---------- | ------ | ------------------------------- |
-| difficulty | number | difficulty to set on PoW Shield |
+## Data Formats
 
-Response: N/A
+### Stat
 
-#### Fetch Batch Stats
+"stat-type":"client-id":"ISO-Timestamp"|"count"
 
-Method: `fetch_batch_stats`
-Arguments: N/A
+i.e. `ttl_req:aTqmrN0eKqaQa1nIAAAB:2022-06-14T01:55:00.014Z|10`
 
-Response: stats
-
-| Argument | Type     | Description                           |
-| -------- | -------- | ------------------------------------- |
-| stats    | string[] | array of redis entries (`key\|value`) |
-
-Stat Format
-key: `"stat-type":"client-id":"ISO-Timestamp"`
-value: uint
-
-| Stat Type | Value                   |
-| --------- | ----------------------- |
-| legit_req | legit request count     |
-| ttl_req   | total request count     |
-| bad_nonce | bad nonce request count |
-| ttl_waf   | total waf triggers      |
+| stat-type      | Value                                |
+| -------------- | ------------------------------------ |
+| legit_req      | accumulative legit request count     |
+| ttl_req        | accumulative total request count     |
+| bad_nonce      | accumulative bad nonce request count |
+| ttl_waf        | accumulative waf trigger count       |
+| ttl_solve_time | accumulated time of solved problems  |
+| prob_solved    | number of problems solved            |

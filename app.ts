@@ -6,7 +6,10 @@ const server = Server.getInstance
 const cronJob = new CronJob(
   `*/${config.stat_fetch_interval} * * * * *`,
   function () {
-    server.broadcast('subscription', JSON.stringify({ method: 'fetch_stats' }))
+    server.broadcast(
+      'subscription',
+      JSON.stringify({ method: 'shld_fetch_stats' })
+    )
   }
 )
 cronJob.start()
