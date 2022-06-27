@@ -45,13 +45,13 @@ Passive endpoints consume a call and return data (call handled by phalanx socket
 
 ## Controller Channel
 
-| Method                   | Type             | Scope     | Arguments         | Description                                                           |
-| ------------------------ | ---------------- | --------- | ----------------- | --------------------------------------------------------------------- |
-| phlx_override_difficulty | passive endpoint | unicast   | [difficulty:uint] | Controller asks phalanx to override difficulty                        |
-| phlx_add_whitelist       | passive endpoint | unicast   | [token:string]    | Controller asks phalanx to add new whitelist token                    |
-| phlx_remove_whitelist    | passive endpoint | unicast   | [token:string]    | Controller asks phalanx to remove whitelist token                     |
-| phlx_update_model        | passive endpoint | unicast   | TBD               | Controller pushes edge security model to phalanx to update on shields |
-| ctrl_stats               | active feed      | broadcast | TBD               | Phalanx broadcasts current stats to controller                        |
+| Method                   | Type             | Scope     | Arguments                           | Description                                                           |
+| ------------------------ | ---------------- | --------- | ----------------------------------- | --------------------------------------------------------------------- |
+| phlx_override_difficulty | passive endpoint | unicast   | [difficulty:uint]                   | Controller asks phalanx to override difficulty                        |
+| phlx_add_whitelist       | passive endpoint | unicast   | [token:string]                      | Controller asks phalanx to add new whitelist token                    |
+| phlx_remove_whitelist    | passive endpoint | unicast   | [token:string]                      | Controller asks phalanx to remove whitelist token                     |
+| phlx_update_model        | passive endpoint | unicast   | TBD                                 | Controller pushes edge security model to phalanx to update on shields |
+| ctrl_stats               | active feed      | broadcast | {stats:Stat[], whitelist: string[]} | Phalanx broadcasts current stats to controller                        |
 
 ## Model Channel
 
