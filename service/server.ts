@@ -27,6 +27,7 @@ export default class Server {
         )
       } else {
         client.disconnect(true)
+        return
       }
       client.on('message', async (message: string) => {
         switch (channel) {
@@ -146,6 +147,7 @@ export default class Server {
         )
         break
       case 'phlx_add_whitelist':
+        await this.nosql.setNX(`wht:${obj.arguments[0]}`, '1')
         this.broadcast(
           'subscription',
           JSON.stringify({
@@ -155,6 +157,7 @@ export default class Server {
         )
         break
       case 'phlx_remove_whitelist':
+        await this.nosql.del(`wht:${obj.arguments[0]}`)
         this.broadcast(
           'subscription',
           JSON.stringify({
@@ -183,7 +186,7 @@ export default class Server {
         )
         break
       case 'phlx_fetch_batch_stats':
-        const dump = await this.nosql.dump()
+        const dump = await this.nosql.dumpStats()
         if (obj.arguments[0]) {
           client.send(
             JSON.stringify({
