@@ -45,6 +45,7 @@ services:
       - 'SUBSCRIPTION_TOKEN=test-subscription-token'
       - 'CONTROLLER_TOKEN=test-controller-token'
       - 'MODEL_TOKEN=test-model-token'
+      - 'CONTROLLER_BROADCAST_INTERVAL=20'
       - 'STAT_FETCH_INTERVAL=5'
       - 'STAT_KEEP_HISTORY_TIME=60'
     depends_on:

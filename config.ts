@@ -8,6 +8,7 @@ interface Config {
   database_password: string
   subscription_token: string
   controller_token: string
+  controller_broadcast_interval: number
   model_token: string
   stat_fetch_interval: number
   stat_keep_history_time: number
@@ -27,6 +28,9 @@ config = {
   subscription_token:
     process.env.SUBSCRIPTION_TOKEN || 'test-subscription-token',
   controller_token: process.env.CONTROLLER_TOKEN || 'test-controller-token',
+  controller_broadcast_interval: process.env.CONTROLLER_BROADCAST_INTERVAL
+    ? parseInt(process.env.CONTROLLER_BROADCAST_INTERVAL)
+    : 30,
   model_token: process.env.MODEL_TOKEN || 'test-model-token',
   stat_fetch_interval: process.env.STAT_FETCH_INTERVAL
     ? parseInt(process.env.STAT_FETCH_INTERVAL)
