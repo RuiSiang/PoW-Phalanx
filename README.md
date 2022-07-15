@@ -2,6 +2,8 @@
 
 Controller for [PoW-Shield](https://github.com/RuiSiang/PoW-Shield) that calculates and assigns the optimal difficulty via request and waf trigger distributions based on machine learning model.
 
+User interface for PoW-Phalanx can be found at [PoW-Phalanx Controller UI](https://github.com/RuiSiang/PoW-Phalanx-Controller-UI)
+
 Todos:
 
 - [x] Socket connectivity with PoW Shield
