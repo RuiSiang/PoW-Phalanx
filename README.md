@@ -1,4 +1,4 @@
-# WIP: PoW Phalanx
+# PoW Phalanx
 
 Controller for [PoW-Shield](https://github.com/RuiSiang/PoW-Shield) that calculates and assigns the optimal difficulty via request and waf trigger distributions based on machine learning model.
 
@@ -12,10 +12,60 @@ Todos:
 - [x] Model interaction interface
 - [x] Feature synchronization
 - [x] Ban state synchronization
+- [x] Controller graphics interface
 - [ ] Security model update
-- [ ] Controller graphics interface
+- [ ] Unit test
 
 ## Prerequisites
+
+Docker ^19.0.0
+Nodejs ^14.0.0
+
+## Configuration
+
+- nodejs: .env (example: .env.example)
+- docker-compose: docker-compose.yaml (example: docker-compose.example.yaml)
+- docker run: -e parameter
+
+### Environmental Variables
+
+| Variable                      | Default                 | Description                                                                                  |
+| ----------------------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
+| PORT                          | 6000                    | port for phalanx instance                                                                    |
+| DATABASE_HOST                 | 127.0.0.1               | host for redis database                                                                      |
+| DATABASE_PORT                 | 6379                    | port for redis database                                                                      |
+| DATABASE_PASSWORD             |                         | password for redis database                                                                  |
+| SUBSCRIPTION_TOKEN            | test-subscription-token | token for access to subscription endpoint                                                    |
+| CONTROLLER_TOKEN              | test-controller-token   | token for access to controller endpoint                                                      |
+| MODEL_TOKEN                   | test-model-token        | token for access to model endpoint                                                           |
+| CONTROLLER_BROADCAST_INTERVAL | 20                      | interval(seconds) for phalanx to broadcast controller stats                                  |
+| STAT_FETCH_INTERVAL           | 10                      | interval(seconds) for phalanx to broadcast fetch directive to subscibed pow-shield instances |
+| STAT_KEEP_HISTORY_TIME        | 3600                    | length(seconds) for phalanx to keep history fetched from pow-shield instances                |
+
+## Usage
+
+```
+# Clone repository
+git clone https://github.com/RuiSiang/PoW-Phalanx.git
+
+# Install dependencies
+npm install
+
+# Configure settings
+cp -n .env.example .env
+# Edit .env
+nano .env
+
+# Transpile
+npm run build
+
+#############################################
+# Set up redis server as database           #
+# install redis first                       #
+# sudo apt-get install redis-server         #
+#############################################
+npm start
+```
 
 ## Subscriptions
 
