@@ -31,6 +31,7 @@ services:
       - redis1
       - webapp
       - pow-phalanx
+      - resource-monitor
     ports:
       - '3000:3000'
 
@@ -48,6 +49,9 @@ services:
       - 'CONTROLLER_BROADCAST_INTERVAL=20'
       - 'STAT_FETCH_INTERVAL=5'
       - 'STAT_KEEP_HISTORY_TIME=60'
+      - 'RESOURCE_MONITOR=on'
+      - 'RESOURCE_MONITOR_HOST=resource-monitor'
+      - 'RESOURCE_MONITOR_PORT=3000'
     depends_on:
       - redis2
     ports:
@@ -67,3 +71,10 @@ services:
   webapp:
     container_name: webapp
     image: ruisiang/trapbox
+
+  resource-monitor:
+    container_name: resource-monitor
+    image: ruisiang/resource-monitor
+    environment:
+      - 'PORT=3000'
+      - 'INTERVAL=5'

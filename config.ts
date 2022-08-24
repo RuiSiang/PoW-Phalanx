@@ -12,6 +12,9 @@ interface Config {
   model_token: string
   stat_fetch_interval: number
   stat_keep_history_time: number
+  resource_monitor: boolean
+  resource_monitor_host: string
+  resource_monitor_port: string
 }
 
 let config: Config
@@ -38,6 +41,9 @@ config = {
   stat_keep_history_time: process.env.STAT_KEEP_HISTORY_TIME
     ? parseInt(process.env.STAT_KEEP_HISTORY_TIME)
     : 3600,
+  resource_monitor: process.env.RESOURCE_MONITOR === 'on',
+  resource_monitor_host: process.env.RESOURCE_MONITOR_HOST || '',
+  resource_monitor_port: process.env.RESOURCE_MONITOR_PORT || '',
 }
 // }
 

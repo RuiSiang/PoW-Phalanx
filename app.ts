@@ -2,6 +2,7 @@ import Server from './service/server'
 import { CronJob } from 'cron'
 import config from './config'
 import NoSql from './service/nosql'
+import Client from './service/socket-client'
 
 const server = Server.getInstance
 const subscriptionCron = new CronJob(
@@ -22,10 +23,19 @@ const controllerCron = new CronJob(
       'controller',
       JSON.stringify({
         method: 'ctrl_stats',
-        arguments: { stats: await nosql.dumpStats(), whitelist: await nosql.dumpWhitelist() },
+        arguments: {
+          stats: await nosql.dumpStats(),
+          whitelist: await nosql.dumpWhitelist(),
+        },
       })
     )
   }
 )
 controllerCron.start()
 console.log('PoW Phalanx Initiated')
+
+if (config.resource_monitor) {
+  Client.getInstance(
+    `http://${config.resource_monitor_host}:${config.resource_monitor_port}`
+  )
+}
