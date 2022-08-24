@@ -41,6 +41,9 @@ Nodejs ^14.0.0
 | CONTROLLER_BROADCAST_INTERVAL | 20                      | interval(seconds) for phalanx to broadcast controller stats                                  |
 | STAT_FETCH_INTERVAL           | 10                      | interval(seconds) for phalanx to broadcast fetch directive to subscibed pow-shield instances |
 | STAT_KEEP_HISTORY_TIME        | 3600                    | length(seconds) for phalanx to keep history fetched from pow-shield instances                |
+| RESOURCE_MONITOR              | off                     | connect to resource monitor on backend                                                       |
+| RESOURCE_MONITOR_HOST         |                         | resource monitor host                                                                        |
+| RESOURCE_MONITOR_PORT         |                         | resource monitor port                                                                        |
 
 ## Usage
 
@@ -107,11 +110,12 @@ Passive endpoints consume a call and return data (call handled by phalanx socket
 
 ## Model Channel
 
-| Method                 | Type             | Scope   | Arguments         | Description                                |
-| ---------------------- | ---------------- | ------- | ----------------- | ------------------------------------------ |
-| phlx_set_difficulty    | passive endpoint | unicast | [difficulty:uint] | Model asks phalanx to set new difficulty   |
-| phlx_fetch_batch_stats | passive endpoint | unicast | [lastRow?:string] | Model requests phalanx to send batch stats |
-| modl_batch_stats       | active feed      | unicast | stats:Stat[]      | Phalanx sends batch stats to model         |
+| Method                 | Type             | Scope     | Arguments         | Description                                         |
+| ---------------------- | ---------------- | --------- | ----------------- | --------------------------------------------------- |
+| phlx_set_difficulty    | passive endpoint | unicast   | [difficulty:uint] | Model asks phalanx to set new difficulty            |
+| phlx_fetch_batch_stats | passive endpoint | unicast   | [lastRow?:string] | Model requests phalanx to send batch stats          |
+| modl_batch_stats       | active feed      | unicast   | stats:Stat[]      | Phalanx sends batch stats to model                  |
+| modl_backend_stats     | active feed      | broadcast | util:ResourceUtil | Phalanx redirects resource monitor stats on backend |
 
 ## Data Formats
 
@@ -129,3 +133,21 @@ i.e. `ttl_req:aTqmrN0eKqaQa1nIAAAB:2022-06-14T01:55:00.014Z|10`
 | ttl_waf        | accumulative waf trigger count       |
 | ttl_solve_time | accumulated time of solved problems  |
 | prob_solved    | number of problems solved            |
+
+### ResourceUtil
+
+i.e.
+
+```json
+{
+  "cpuUtil": "0.27",
+  "memUtil": "14.22",
+  "uptime": "350"
+}
+```
+
+| stat-type | Value                        |
+| --------- | ---------------------------- |
+| cpuUtil   | CPU utilization (percentage) |
+| memUtil   | RAM utilization (percentage) |
+| uptime    | machine uptime (seconds)     |
