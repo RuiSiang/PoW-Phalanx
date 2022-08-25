@@ -70,6 +70,9 @@ class NoSql {
   public dumpWhitelist = async () => {
     return (await this.dbInstance.keys('wht:*')).sort()
   }
+  public dumpSettings = async () => {
+    return (await this.dbInstance.keys('settings:*')).sort()
+  }
 }
 
 export default NoSql
