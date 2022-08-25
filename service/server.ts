@@ -118,6 +118,15 @@ export default class Server {
           config.stat_keep_history_time
         )
         break
+      case 'phlx_update_settings':
+        console.log(`Settings sent from ${client.id}`)
+        console.log(obj.arguments[0])
+        this.nosql.setNX(
+          `settings:${client.id}`,
+          obj.arguments[0],
+          true,
+          config.stat_keep_history_time
+        )
       case 'phlx_ban_ip':
         this.broadcast(
           'subscription',
@@ -198,6 +207,15 @@ export default class Server {
           client.send(
             JSON.stringify({
               method: 'modl_batch_stats',
+              arguments: dump,
+            })
+          )
+        }
+        if (config.settings_fetch) {
+          const dump = await this.nosql.dumpSettings()
+          client.send(
+            JSON.stringify({
+              method: 'modl_settings',
               arguments: dump,
             })
           )

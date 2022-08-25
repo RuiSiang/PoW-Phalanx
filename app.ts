@@ -12,6 +12,12 @@ const subscriptionCron = new CronJob(
       'subscription',
       JSON.stringify({ method: 'shld_fetch_stats' })
     )
+    if (config.settings_fetch) {
+      server.broadcast(
+        'subscription',
+        JSON.stringify({ method: 'shld_fetch_settings' })
+      )
+    }
   }
 )
 subscriptionCron.start()

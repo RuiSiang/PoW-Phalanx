@@ -44,6 +44,7 @@ Nodejs ^14.0.0
 | RESOURCE_MONITOR              | off                     | connect to resource monitor on backend                                                       |
 | RESOURCE_MONITOR_HOST         |                         | resource monitor host                                                                        |
 | RESOURCE_MONITOR_PORT         |                         | resource monitor port                                                                        |
+| SETTINGS_FETCH                | off                     | fetch settings dump alongside batch stats                                                    |
 
 ## Usage
 
@@ -90,9 +91,11 @@ Passive endpoints consume a call and return data (call handled by phalanx socket
 | Method                | Type             | Scope     | Arguments                  | Description                                                     |
 | --------------------- | ---------------- | --------- | -------------------------- | --------------------------------------------------------------- |
 | phlx_update_stats     | passive endpoint | unicast   | stats:Stat[]               | Shield pushes new data to phalanx                               |
+| phlx_update_settings  | passive endpoint | unicast   | stats:Config               | Shield pushes new settings dump to phalanx                      |
 | phlx_ban_ip           | passive endpoint | unicast   | [ip:string, seconds: uint] | Shield signals to phalanx that a new IP is banned               |
 | shld_ban_ip           | active feed      | broadcast | [ip:string, seconds: uint] | Phalanx broadcasts to shields that a new IP is banned           |
 | shld_fetch_stats      | active feed      | broadcast | N/A                        | Phalanx broadcasts to shields to signal a new data push         |
+| shld_fetch_settings   | active feed      | broadcast | N/A                        | Phalanx broadcasts to shields to signal a new settings dump     |
 | shld_set_config       | active feed      | broadcast | [key:string, value:any]    | Phalanx broadcasts to shields to set a config parameter         |
 | shld_add_whitelist    | active feed      | broadcast | [token:string]             | Phalanx broadcasts to shields to add a whitelist token          |
 | shld_remove_whitelist | active feed      | broadcast | [token:string]             | Phalanx broadcasts to shields to remove a whitelist token       |
@@ -116,6 +119,7 @@ Passive endpoints consume a call and return data (call handled by phalanx socket
 | phlx_fetch_batch_stats | passive endpoint | unicast   | [lastRow?:string] | Model requests phalanx to send batch stats          |
 | modl_batch_stats       | active feed      | unicast   | stats:Stat[]      | Phalanx sends batch stats to model                  |
 | modl_backend_stats     | active feed      | broadcast | util:ResourceUtil | Phalanx redirects resource monitor stats on backend |
+| modl_settings          | active feed      | broadcast | config:Config     | Phalanx sends settings dump to model                |
 
 ## Data Formats
 

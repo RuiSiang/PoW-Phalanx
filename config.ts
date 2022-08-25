@@ -15,6 +15,7 @@ interface Config {
   resource_monitor: boolean
   resource_monitor_host: string
   resource_monitor_port: string
+  settings_fetch: boolean
 }
 
 let config: Config
@@ -44,6 +45,7 @@ config = {
   resource_monitor: process.env.RESOURCE_MONITOR === 'on',
   resource_monitor_host: process.env.RESOURCE_MONITOR_HOST || '',
   resource_monitor_port: process.env.RESOURCE_MONITOR_PORT || '',
+  settings_fetch: process.env.SETTINGS_FETCH === 'on',
 }
 // }
 

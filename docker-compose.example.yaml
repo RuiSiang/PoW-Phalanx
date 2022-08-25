@@ -52,6 +52,7 @@ services:
       - 'RESOURCE_MONITOR=on'
       - 'RESOURCE_MONITOR_HOST=resource-monitor'
       - 'RESOURCE_MONITOR_PORT=3000'
+      - 'SETTINGS_FETCH=on'
     depends_on:
       - redis2
     ports:
