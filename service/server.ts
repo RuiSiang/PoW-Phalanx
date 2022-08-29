@@ -121,7 +121,7 @@ export default class Server {
       case 'phlx_update_settings':
         console.log(`Settings sent from ${client.id}`)
         console.log(obj.arguments[0])
-        await this.nosql.setNX(
+        await this.nosql.setOverride(
           `settings:${client.id}`,
           JSON.stringify(obj.arguments[0]),
           true,

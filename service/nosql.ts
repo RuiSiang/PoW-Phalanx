@@ -40,6 +40,18 @@ class NoSql {
       return []
     }
   }
+  public setOverride = async (
+    key: string,
+    value: string,
+    setexpr?: boolean,
+    exprTime?: number
+  ) => {
+    if (setexpr) {
+      return await this.dbInstance.set(key, value, 'EX', exprTime)
+    } else {
+      return await this.dbInstance.set(key, value)
+    }
+  }
   public setNX = async (
     key: string,
     value: string,
