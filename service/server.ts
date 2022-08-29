@@ -127,6 +127,7 @@ export default class Server {
           true,
           config.stat_keep_history_time
         )
+        break
       case 'phlx_ban_ip':
         this.broadcast(
           'subscription',
