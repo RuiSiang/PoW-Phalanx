@@ -81,37 +81,37 @@ export default class Server {
           ttl_solve_time: obj.arguments[4],
           prob_solved: obj.arguments[5],
         })
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `legit_req:${client.id}:${moment().toISOString()}`,
           obj.arguments[0],
           true,
           config.stat_keep_history_time
         )
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `ttl_req:${client.id}:${moment().toISOString()}`,
           obj.arguments[1],
           true,
           config.stat_keep_history_time
         )
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `bad_nonce:${client.id}:${moment().toISOString()}`,
           obj.arguments[2],
           true,
           config.stat_keep_history_time
         )
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `ttl_waf:${client.id}:${moment().toISOString()}`,
           obj.arguments[3],
           true,
           config.stat_keep_history_time
         )
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `ttl_solve_time:${client.id}:${moment().toISOString()}`,
           obj.arguments[4],
           true,
           config.stat_keep_history_time
         )
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `prob_solved:${client.id}:${moment().toISOString()}`,
           obj.arguments[5],
           true,
@@ -121,9 +121,9 @@ export default class Server {
       case 'phlx_update_settings':
         console.log(`Settings sent from ${client.id}`)
         console.log(obj.arguments[0])
-        this.nosql.setNX(
+        await this.nosql.setNX(
           `settings:${client.id}`,
-          obj.arguments[0],
+          JSON.stringify(obj.arguments[0]),
           true,
           config.stat_keep_history_time
         )
@@ -216,7 +216,7 @@ export default class Server {
           client.send(
             JSON.stringify({
               method: 'modl_settings',
-              arguments: dump,
+              arguments: JSON.stringify(dump),
             })
           )
         }

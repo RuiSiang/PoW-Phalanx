@@ -71,7 +71,10 @@ class NoSql {
     return (await this.dbInstance.keys('wht:*')).sort()
   }
   public dumpSettings = async () => {
-    return (await this.dbInstance.keys('settings:*')).sort()
+    const keys = (await this.dbInstance.keys('settings:*')).sort()
+    return (await this.mget(keys)).map((item, index) => {
+      return {[keys[index]]:JSON.parse(item)}
+    })
   }
 }
 
