@@ -45,6 +45,8 @@ Nodejs ^14.0.0
 | RESOURCE_MONITOR_HOST         |                         | resource monitor host                                                                        |
 | RESOURCE_MONITOR_PORT         |                         | resource monitor port                                                                        |
 | SETTINGS_FETCH                | off                     | fetch settings dump alongside batch stats                                                    |
+| RESTFUL                       | on                      | enable restful api                                                                           |
+| RESTFUL_PORT                  | 9000                    | port for restful api                                                                         |
 
 ## Usage
 
