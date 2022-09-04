@@ -53,10 +53,13 @@ services:
       - 'RESOURCE_MONITOR_HOST=resource-monitor'
       - 'RESOURCE_MONITOR_PORT=3000'
       - 'SETTINGS_FETCH=on'
+      - 'RESTFUL=on'
+      - 'RESTFUL_PORT=9000'
     depends_on:
       - redis2
     ports:
       - '6000:6000'
+      - '9000:9000'
 
   redis1:
     container_name: redis1

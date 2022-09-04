@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 interface Config {
+  port: number
   database_host: string
   database_port: number
   database_password: string
@@ -16,6 +17,8 @@ interface Config {
   resource_monitor_host: string
   resource_monitor_port: string
   settings_fetch: boolean
+  restful: boolean
+  restful_port: number
 }
 
 let config: Config
@@ -24,6 +27,7 @@ let config: Config
 //   config = {}
 // } else {
 config = {
+  port: parseInt(process.env.PORT || '6000'),
   database_host: process.env.DATABASE_HOST || '127.0.0.1',
   database_port: process.env.DATABASE_PORT
     ? parseInt(process.env.DATABASE_PORT)
@@ -46,6 +50,8 @@ config = {
   resource_monitor_host: process.env.RESOURCE_MONITOR_HOST || '',
   resource_monitor_port: process.env.RESOURCE_MONITOR_PORT || '',
   settings_fetch: process.env.SETTINGS_FETCH === 'on',
+  restful: process.env.RESTFUL === 'on',
+  restful_port: parseInt(process.env.RESTFUL_PORT || '9000'),
 }
 // }
 

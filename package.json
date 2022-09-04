@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "bash scripts/build.sh",
+    "dev": "nodemon app.ts",
     "start": "node dist/app.js",
     "start:standalone": "NODE_ENV=standalone node dist/app.js",
     "start:standalone-win": "set NODE_ENV=standalone&& node dist/app.js"
@@ -12,6 +13,7 @@
     "dotenv": "^16.0.0",
     "ioredis": "4.28.5",
     "ioredis-mock": "7.0.0",
+    "koa": "^2.13.4",
     "socket.io-client": "^4.5.1",
     "source-map-loader": "3.0.1",
     "url-parse": "^1.5.10",
@@ -19,9 +21,11 @@
   },
   "devDependencies": {
     "@types/cron": "^1.7.3",
+    "@types/koa": "^2.13.5",
     "@types/url-parse": "^1.4.8",
     "@types/validator": "^13.7.1",
     "cron": "^1.8.2",
+    "nodemon": "^2.0.19",
     "socket.io": "^4.4.1",
     "typescript": "4.5.5"
   }

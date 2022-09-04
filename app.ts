@@ -3,8 +3,10 @@ import { CronJob } from 'cron'
 import config from './config'
 import NoSql from './service/nosql'
 import Client from './service/socket-client'
+import Restful from './service/restful'
 
 const server = Server.getInstance
+const restful = Restful.getInstance
 const subscriptionCron = new CronJob(
   `*/${config.stat_fetch_interval} * * * * *`,
   function () {

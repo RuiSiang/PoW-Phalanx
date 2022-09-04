@@ -54,7 +54,7 @@ export default class Server {
       console.log(`Websocket Error: ${err.name} ${err.message}`)
     })
 
-    this.server.listen(parseInt(process.env.PORT || '6000'))
+    this.server.listen(config.port)
   }
 
   public broadcast = (channel: string, message: string) => {

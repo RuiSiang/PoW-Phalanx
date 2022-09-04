@@ -155,3 +155,84 @@ i.e.
 | cpuUtil   | CPU utilization (percentage) |
 | memUtil   | RAM utilization (percentage) |
 | uptime    | machine uptime (seconds)     |
+
+## Restful API for Model
+
+### GET /stats?token=model-token
+
+Description: Get stats for model training
+
+Request:
+
+- Params: N/A
+- Query:
+  - token: token for model connection (same as the one for socket)
+
+Response:
+
+- instances: object of stat entry arrays organized by client id and stat type (see example)
+- settings: object of setting configurations for each client
+- backend: resource stats on the backend site
+
+Example Request
+
+```
+curl http://pow-phalanx:9000/stats?token=test-model-token
+```
+
+Example Response
+
+```JSON
+{
+  "instances": {
+    "Do4a-RmsY-0zJmFeAAAB": {
+      "legit_req": ["0", "0", "0"],
+      "ttl_req": ["0", "0", "0"],
+      "bad_nonce": ["0", "0", "0"],
+      "ttl_waf": ["0", "0", "0"],
+      "ttl_solve_time": ["0", "0", "0"],
+      "prob_solved": ["0", "0", "0"]
+    },
+    "y_LhnbDv2TwtvVFtAAAB": {
+      "legit_req": ["1", "13", "22", "22", "23", "24", "24", "24", "24"],
+      "ttl_req": ["4", "16", "25", "27", "29", "30", "30", "31", "31"],
+      "bad_nonce": ["0", "0", "0", "0", "0", "0", "0", "0", "0"],
+      "ttl_waf": ["0", "0", "0", "0", "0", "0", "0", "1", "1"],
+      "ttl_solve_time": ["2544", "2544", "2544", "2544", "4647", "4647", "4647", "4647", "4647"],
+      "prob_solved": ["1", "1", "1", "1", "2", "2", "2", "2", "2"]
+    }
+  },
+  "settings": [
+    {
+      "settings:Do4a-RmsY-0zJmFeAAAB": "{\"session_key\":\"abcdefghijklmnop\",\"pow\":true,\"nonce_validity\":60000,\"difficulty\":13,\"backend_url\":\"http://webapp:80\",\"database_host\":\"redis1\",\"database_port\":6379,\"database_password\":\"\",\"rate_limit\":true,\"rate_limit_sample_minutes\":60,\"rate_limit_session_threshold\":100,\"rate_limit_ban_ip\":true,\"rate_limit_ip_threshold\":500,\"rate_limit_ban_minutes\":15,\"waf\":true,\"waf_url_exclude_rules\":\"\",\"waf_header_exclude_rules\":\"14,33,80,96,100\",\"waf_body_exclude_rules\":\"\",\"ssl\":false,\"ssl_cert_path\":\"tests/ssl/mock-cert.pem\",\"ssl_key_path\":\"tests/ssl/mock-key.pem\",\"socket\":true,\"socket_url\":\"http://pow-phalanx:6000\",\"socket_token\":\"test-subscription-token\"}"
+    }
+  ],
+  "backend": "\"{\\\"cpuUtil\\\":\\\"0.30\\\",\\\"memUtil\\\":\\\"21.78\\\",\\\"uptime\\\":\\\"2591\\\"}\""
+}
+```
+
+### GET /set?token=model-token&difficulty=difficulty
+
+Description: Get stats for model training
+
+Request:
+
+- Params: N/A
+- Query:
+  - token: token for model connection (same as the one for socket)
+  - difficulty: difficulty to set (integer)
+
+Response:
+
+- 200: OK
+- 400: Invalid
+
+Example Request
+
+```
+curl http://pow-phalanx:9000/set?token=test-model-token&difficulty=13
+```
+
+Example Response
+
+`200 OK`
