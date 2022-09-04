@@ -186,14 +186,6 @@ Example Response
 {
   "instances": {
     "Do4a-RmsY-0zJmFeAAAB": {
-      "legit_req": ["0", "0", "0"],
-      "ttl_req": ["0", "0", "0"],
-      "bad_nonce": ["0", "0", "0"],
-      "ttl_waf": ["0", "0", "0"],
-      "ttl_solve_time": ["0", "0", "0"],
-      "prob_solved": ["0", "0", "0"]
-    },
-    "y_LhnbDv2TwtvVFtAAAB": {
       "legit_req": ["1", "13", "22", "22", "23", "24", "24", "24", "24"],
       "ttl_req": ["4", "16", "25", "27", "29", "30", "30", "31", "31"],
       "bad_nonce": ["0", "0", "0", "0", "0", "0", "0", "0", "0"],
